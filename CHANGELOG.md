@@ -1,9 +1,34 @@
 <!--
-Copyright (C) 2018-2022 Robert Wimmer
+Copyright (C) 2018-2023 Robert Wimmer
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
 
 # Changelog
+
+## 14.0.0
+
+- **BREAKING** CentOS7: Introduce `wireguard_centos7_kernel_plus_reboot` and `wireguard_centos7_standard_reboot` variables. Both are set to "true" by default. This will cause the host to be rebooted in case the "wireguard" kernel module was installed the very first time. If `wireguard_centos7_installation_method: "kernel-plus"` is set and the host wasn't booted with a `kernel-plus` kernel already you most probably need to reboot. For the `standard` kernel this might not be needed.
+- CentOS7: Add reboot to the standard mode to make sure the WireGuard kernel module is available (contribution by @mofelee)
+- **BREAKING** Introduce `wireguard_update_cache` variable to control if package manager caches should be updated before the installation (contribution by @sebix). Before this release the package manager cache wasn't updated for AlmaLinux 9, Archlinux, Fedora and openSUSE. With `wireguard_update_cache` set to `true` by default those OSes are now also update the package manager cache. If you don't want that set `wireguard_update_cache` to `false` for the host in question.
+- variable `wireguard_ubuntu_update_cache` is deprecated
+- add support for Oracle Linux 9 (contribution by @cola-zero)
+
+## 13.0.1
+
+- [fix](https://github.com/githubixx/ansible-role-wireguard/pull/182) in README
+
+## 13.0.0
+
+- add IPv6 support (contribution by @DiscowZombie)
+- introduce `wireguard_addresses` variable (contribution by @DiscowZombie)
+
+## 12.0.0
+
+- remove Fedora 35 support (reached EOL)
+- remove openSUSE 15.3 support (reached EOL)
+- remove Debian 10 (Buster) support (reached EOL)
+- fix Molecule prepare for Archlinux
+- fix `ansible-lint` issue in `tasks/setup-debian-raspbian-buster.yml`
 
 ## 11.1.0
 
@@ -13,7 +38,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 ## 11.0.0
 
 - add support for Rocky Linux 9 (original PR from @vincentDcmps: https://github.com/githubixx/ansible-role-wireguard/pull/163)
-- add support for AlamaLinux 9 (original PR from @trunet: https://github.com/githubixx/ansible-role-wireguard/pull/164)
+- add support for AlmaLinux 9 (original PR from @trunet: https://github.com/githubixx/ansible-role-wireguard/pull/164)
 - add `EL9` to `meta/main.yml`
 - require Ansible >= `2.11` as Rocky Linux is only supported with this version or above
 - `ansible-lint`: use `community.general.pacman` module instead of `ansible.builtin.pacman` for Archlinux setup
