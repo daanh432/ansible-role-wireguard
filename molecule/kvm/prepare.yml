@@ -1,5 +1,5 @@
 ---
-# Copyright (C) 2021-2022 Robert Wimmer
+# Copyright (C) 2021-2023 Robert Wimmer
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - hosts: opensuse
@@ -17,7 +17,7 @@
 - hosts: archlinux
   remote_user: vagrant
   become: true
-  gather_facts: true
+  gather_facts: false
   tasks:
     - name: Init pacman
       ansible.builtin.raw: |
@@ -25,6 +25,16 @@
         pacman-key --populate archlinux
       changed_when: false
       failed_when: false
+
+    - name: Updating pacman cache
+      raw: pacman -Sy
+
+    - name: Install Python
+      ansible.builtin.raw: |
+        pacman -S --noconfirm python
+      args:
+        executable: /bin/bash
+      changed_when: false
 
 - hosts: proxmox
   remote_user: vagrant
